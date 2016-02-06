@@ -576,6 +576,18 @@ def spatial_batchnorm_forward(x, gamma, beta, bn_param):
   # version of batch normalization defined above. Your implementation should  #
   # be very short; ours is less than five lines.                              #
   #############################################################################
+#  cache_list = []
+  N, C, H, W = x.shape
+#  out = np.zeros_like(x)
+#  for i in np.arange(H):
+#    for j in np.arange(W):
+#        temp, cache = batchnorm_forward(x[:,:,i,j], gamma, beta, bn_param)
+#        cache_list.append(cache)
+#        out[:,:, i,j] = temp
+  x_reshaped = x.swapaxes(1, 3).reshape([-1, C])
+  out, cache = batchnorm_forward(x_reshaped, gamma, beta, bn_param)
+  out = out.reshape([N, W, H, C]).swapaxes(1,3)
+
   pass
   #############################################################################
   #                             END OF YOUR CODE                              #
@@ -597,6 +609,23 @@ def spatial_batchnorm_backward(dout, cache):
   - dgamma: Gradient with respect to scale parameter, of shape (C,)
   - dbeta: Gradient with respect to shift parameter, of shape (C,)
   """
+  
+  """
+      Backward pass for batch normalization.
+      
+      For this implementation, you should write out a computation graph for
+      batch normalization on paper and propagate gradients backward through
+      intermediate nodes.
+      
+      Inputs:
+      - dout: Upstream derivatives, of shape (N, D)
+      - cache: Variable of intermediates from batchnorm_forward.
+      
+      Returns a tuple of:
+      - dx: Gradient with respect to inputs x, of shape (N, D)
+      - dgamma: Gradient with respect to scale parameter gamma, of shape (D,)
+      - dbeta: Gradient with respect to shift parameter beta, of shape (D,)
+  """
   dx, dgamma, dbeta = None, None, None
 
   #############################################################################
@@ -606,6 +635,21 @@ def spatial_batchnorm_backward(dout, cache):
   # version of batch normalization defined above. Your implementation should  #
   # be very short; ours is less than five lines.                              #
   #############################################################################
+  N, C, H, W = dout.shape
+#  dx = np.zeros_like(dout)
+#  dgamma = np.zeros(C)
+#  dbeta = np.zeros(C)
+#  for i in np.arange(H):
+#    for j in np.arange(W):
+#        temp_dx, temp_dgamma, temp_dbeta = batchnorm_backward(dout[:,:,i,j], cache[i * W + j])
+#        dx[:,:,i,j] += temp_dx
+#        dgamma += temp_dgamma
+#        dbeta += temp_dbeta
+
+  dout_reshaped = dout.swapaxes(1, 3).reshape([-1, C])
+  dx, dgamma, dbeta = batchnorm_backward(dout_reshaped, cache)
+  dx = dx.reshape([N,W,H,C]).swapaxes(1,3)
+
   pass
   #############################################################################
   #                             END OF YOUR CODE                              #

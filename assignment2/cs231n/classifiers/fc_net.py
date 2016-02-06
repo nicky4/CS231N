@@ -327,23 +327,6 @@ class FullyConnectedNet(object):
     ############################################################################
     loss, dscore = softmax_loss(scores, y)
 
-#    for i in np.arange(self.num_layers, 0, -1):
-#        if i == self.num_layers:
-#            loss += 0.5 * self.reg * np.sum(self.params['W%d' % float(i)] ** 2) # L2 regularization
-#            grads['W%d' % float(i)] = l[i-1].T.dot(dscore)
-#            grads['W%d' % float(i)] += self.reg * self.params['W%d' % float(i)]
-#            grads['b%d' % float(i)] = np.sum(dscore, axis = 0)
-#        else:
-#            loss += 0.5 * self.reg * np.sum(self.params['W%d' % float(i)] ** 2) # L2 regularization
-#            dhidden = np.dot(dscore, self.params['W%d' % float(i+1)].T)
-#            dhidden[l[i] <= 0] = 0
-#    
-#            grads['W%d' % float(i)] = l[i-1].T.dot(dhidden)
-#            grads['W%d' % float(i)] += self.reg * self.params['W%d' % float(i)]
-#            dscore = dhidden
-#            grads['b%d' % float(i)] = np.sum(dhidden, axis = 0)
-
-
     for i in np.arange(self.num_layers, 0, -1):
             loss += 0.5 * self.reg * np.sum(self.params['W%d' % float(i)] ** 2) # L2 regularization
             if i == self.num_layers:
@@ -369,17 +352,6 @@ class FullyConnectedNet(object):
             grads['W%d' % float(i)] += self.reg * self.params['W%d' % float(i)]
             grads['b%d' % float(i)] = db
             dscore = dx
-
-#    grads['W2'] = l1.T.dot(dscore)
-#    grads['W2'] += self.reg * self.params['W2']
-#    grads['b2'] = np.sum(dscore, axis=0)
-#    
-#    dhidden = np.dot(dscore, self.params['W2'].T)
-#    grads['b1'] = np.sum(dhidden, axis=0)
-#    dhidden[l1 <= 0] = 0
-#    
-#    grads['W1'] = X.T.dot(dhidden)
-#    grads['W1'] += self.reg * self.params['W1']
 
     pass
     ############################################################################

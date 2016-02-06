@@ -66,7 +66,6 @@ def conv_forward_strides(x, w, b, conv_param):
                 shape=shape, strides=strides)
   x_cols = np.ascontiguousarray(x_stride)
   x_cols.shape = (C * HH * WW, N * out_h * out_w)
-
   # Now all our convolutions are a big matrix multiply
   res = w.reshape(F, -1).dot(x_cols) + b.reshape(-1, 1)
 
